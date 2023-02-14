@@ -111,4 +111,3 @@ var settings = null;
 
 
 
-module.exports.plugin = require("./agent_cypress");
