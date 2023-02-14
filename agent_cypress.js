@@ -186,7 +186,7 @@ async function start(pkg) {
 }
 
 module.exports.start = start;
-module.exports.plugin = require("./index");
+module.exports.plugin = require("./index").init;
 
 
 // const axios = require("axios")
