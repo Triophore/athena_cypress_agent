@@ -2,12 +2,12 @@
   "name": "athena_cypress_agent",
   "version": "1.0.0",
   "description": "",
-  "main": "cypress_agent.js",
+  "main": "agent_cypress.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "bin": {
-    "agent": "cypress_agent.js"
+    "agent": "agent_cypress.js"
   },
   "keywords": [],
   "author": "",
