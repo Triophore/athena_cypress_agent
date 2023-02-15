@@ -6,10 +6,10 @@ const path = require("path");
 const saveFile = require('fs').writeFileSync;
 async function start() {
 
-    var start_script = fs.readFileSync("../athena_cypress_agent/start.txt");
 
-    console.log(start_script)
-    process.exit(0)
+
+    // console.log(start_script)
+    // process.exit(0)
 
     console.log(figlet.textSync('Athena', {
         // font: 'Ghost',
@@ -106,9 +106,9 @@ async function start() {
 
     saveFile(pkgJsonPath, JSON.stringify(json, null, 2));
 
+    var start_script = fs.readFileSync("../athena_cypress_agent/start.txt");
 
-
-    fs.writeSync(path.join(proj_path, "start.js"),start_script);
+    fs.writeFileSync(path.join(proj_path, "start.js"),start_script);
 
     console.log("")
     console.log("")
