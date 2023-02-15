@@ -8,7 +8,7 @@ var status = {}
 status.agent_status = "connected";
 status.agent_running = "stopped";
 const path = require("path");
-const Confirm = require('prompt-confirm');
+
 
 async function start(pkg) {
     try {
