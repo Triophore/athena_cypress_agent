@@ -1,0 +1,9 @@
+var agent = require("athena_cypress_agent");
+const cypress = require('cypress')
+const pkg = require("./package.json")
+async function init(){
+    await agent.start(pkg);
+    const results = await cypress.run()
+}
+console.log("starting");
+init();
