@@ -13,6 +13,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "aws-s3": "^2.0.5",
+    "aws-sdk": "^2.1312.0",
     "axios": "^0.27.2",
     "delete": "^1.1.0",
     "socket.io-client": "^4.5.1",
