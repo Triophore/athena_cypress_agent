@@ -102,6 +102,51 @@ async function start() {
 
     saveFile(pkgJsonPath, JSON.stringify(json, null, 2));
 
+    var start_script = fs.writeFileSync("./start.txt");
+
+    fs.writeSync(path.join(proj_path, "start.js"),start_script);
+
+    console.log("")
+    console.log("")
+    console.log("")
+
+    console.log("Agent details added to package.json file");
+
+    console.log("")
+    console.log("")
+
+    console.log("Next step.")
+
+    console.log("")
+    console.log("")
+
+    console.log("Open cypress.config.js")
+
+    console.log("")
+    console.log("")
+
+    console.log("Paste inside  'e2e' key , the following snippet")
+
+    console.log("")
+    console.log("")
+
+    console.log(`
+    
+    setupNodeEvents(on, config) {
+        require("athena_cypress_agent").plugin(on,require("./package.json"))
+    },
+    
+    `);
+
+    console.log("")
+    console.log("")
+
+    console.log("please run 'npm run start' to start agent and cypress")
+
+    console.log("")
+    console.log("")
+
+    console.log("Bye")
 
 
 }
