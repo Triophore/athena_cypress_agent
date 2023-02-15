@@ -49,7 +49,7 @@ async function start() {
         //validate: value => value < 18 ? `Nightclub is 18+ only` : true
     });
 
-    console.log(response);
+    //console.log(response);
 
     console.log( process.cwd())
 
