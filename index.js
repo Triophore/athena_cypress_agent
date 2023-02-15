@@ -1,6 +1,5 @@
 var api = require("./api")
 const fs = require("fs");
-const Confirm = require('prompt-confirm');
 const { io } = require("socket.io-client");
 const agent_info = require("./agent_info");
 const spawn = require('child_process').spawn;
