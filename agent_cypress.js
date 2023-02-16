@@ -8,15 +8,23 @@ var status = {}
 status.agent_status = "connected";
 status.agent_running = "stopped";
 const path = require("path");
+var figlet = require('figlet');
 async function start(pkg) {
     try {
         const cypress = require('cypress');
+        console.log(figlet.textSync('Athena', {
+            // font: 'Ghost',
+            horizontalLayout: 'default',
+            verticalLayout: 'default',
+            width: 80,
+            whitespaceBreak: true
+        }));
         var package_json = pkg
         if (package_json.agent_cypress) {
             console.log("Cypress Remote Runner Agent");
             const socket = io(package_json.agent_cypress.server_url);
             socket.on("connect", async function () {
-                console.log("Connected to Tiny Cypress Server");
+                console.log("Connected to Athena Server");
                 var res = await agent_info.getinfo();
                 var d = {
                     project_id: package_json.agent_cypress.project_id,
@@ -27,7 +35,6 @@ async function start(pkg) {
                 d = {
                     ...d, ...package_json.agent_cypress
                 }
-                console.log("Project ID ", d)
                 socket.emit("join_agent", d);
             });
             socket.on("agent_start", async function (data) {
