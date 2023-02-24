@@ -106,7 +106,7 @@ async function start() {
 
     saveFile(pkgJsonPath, JSON.stringify(json, null, 2));
 
-    var start_script = fs.readFileSync("../athena_cypress_agent/start.txt");
+    var start_script = fs.readFileSync("node_modules/athena_cypress_agent/start.txt");
 
     fs.writeFileSync(path.join(proj_path, "start.js"),start_script);
 
