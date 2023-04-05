@@ -9,6 +9,7 @@ if (!json.hasOwnProperty('scripts')) {
 }
 
 json.scripts['athena'] = 'athena';
+json.scripts['fixture'] = 'athena --command=fixture';
 
 saveFile(pkgJsonPath, JSON.stringify(json, null, 2));
 

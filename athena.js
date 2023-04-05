@@ -3,6 +3,9 @@ var figlet = require('figlet');
 const prompts = require('prompts');
 const fs = require("fs");
 const path = require("path");
+const yargs = require('yargs/yargs');
+const { hideBin } = require('yargs/helpers')
+const argv = yargs(hideBin(process.argv)).argv
 const saveFile = require('fs').writeFileSync;
 async function start() {
 
@@ -18,6 +21,41 @@ async function start() {
         width: 80,
         whitespaceBreak: true
     }));
+
+    if (argv.command == 'fixture') {
+        var proj_path = process.cwd();
+        var full_path = path.join(proj_path, "fixtures.json");
+
+        let Files = [];
+
+        function ThroughDirectory(Directory) {
+            fs.readdirSync(Directory).forEach(File => {
+                const Absolute = Path.join(Directory, File);
+                if (fs.statSync(Absolute).isDirectory()) return ThroughDirectory(Absolute);
+                else return Files.push(Absolute);
+            });
+        }
+
+        ThroughDirectory(path.join(proj_path,"./cypress/e2e/"));
+
+
+        var final_fixture = [];
+
+        for (var d = 0; d < Files.length; d++) {
+            var o = {
+
+            }
+            o[Files[d]] = "";
+            final_fixture.push(o);
+        }
+
+        fs.writeFileSync(full_path , JSON.stringify(final_fixture, null, 2));
+
+        console.log("fixture and spec mapping file created ...");
+        console.log(" ")
+        console.log("bye...");
+        process.exit(0);
+    }
 
     console.log("Project helper cli")
 
@@ -64,13 +102,13 @@ async function start() {
     var agent_json = null;
 
     try {
-       agent_json = JSON.parse(agnet_config.value); 
+        agent_json = JSON.parse(agnet_config.value);
     } catch (error) {
         console.log("Error Agent Config is not valid json");
         process.exit(0);
     }
 
-    if(agent_json == null){
+    if (agent_json == null) {
         console.log("Error Agent Config is not valid json");
         process.exit(0);
     }
@@ -94,10 +132,10 @@ async function start() {
     }
 
     var agent = {
-        project_id : project_id.value,
-        r2accountid : r2accountid.value,
-        r2accountkeyid : r2accountkeyid.value,
-        r2secret : r2secret.value,
+        project_id: project_id.value,
+        r2accountid: r2accountid.value,
+        r2accountkeyid: r2accountkeyid.value,
+        r2secret: r2secret.value,
         ...agent_json
     }
 
@@ -108,7 +146,7 @@ async function start() {
 
     var start_script = fs.readFileSync("node_modules/athena_cypress_agent/start.txt");
 
-    fs.writeFileSync(path.join(proj_path, "start.js"),start_script);
+    fs.writeFileSync(path.join(proj_path, "start.js"), start_script);
 
     console.log("")
     console.log("")
