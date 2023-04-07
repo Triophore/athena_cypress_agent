@@ -43,7 +43,7 @@ async function start(pkg,base_path,start,stop) {
 
                 }
             }),
-            start(pkg)
+         
             socket.on("agent_start", async function (data) {
 
                 if (package_json.agent_cypress.agent_name == data.agents) {
@@ -70,7 +70,7 @@ async function start(pkg,base_path,start,stop) {
                         //         socket.emit("agent_result", res);
                         //     })
 
-                        em.emit('bootstrap', data);
+                        start(data)
                     } else {
                         console.log("Agent Already Running");
                     }
