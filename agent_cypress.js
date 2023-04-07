@@ -40,7 +40,7 @@ async function start(pkg,base_path,start,stop) {
             });
             socket.on("getallfixtures", async function (data) {
                 if(data == package_json.agent_cypress.project_id){
-
+                    start(data)
                 }
             }),
          
@@ -70,7 +70,7 @@ async function start(pkg,base_path,start,stop) {
                         //         socket.emit("agent_result", res);
                         //     })
 
-                        start(data)
+                     
                     } else {
                         console.log("Agent Already Running");
                     }
