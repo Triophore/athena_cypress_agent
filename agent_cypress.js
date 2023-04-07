@@ -9,7 +9,8 @@ status.agent_status = "connected";
 status.agent_running = "stopped";
 const path = require("path");
 var figlet = require('figlet');
-async function start(pkg) {
+var events = require('events');
+async function start(pkg,base_path) {
     try {
         const cypress = require('cypress');
         console.log(figlet.textSync('Athena', {
@@ -37,31 +38,38 @@ async function start(pkg) {
                 }
                 socket.emit("join_agent", d);
             });
+            socket.on("getallfixtures", async function (data) {
+                if(data == package_json.agent_cypress.project_id){
+
+                }
+            }),
             socket.on("agent_start", async function (data) {
 
                 if (package_json.agent_cypress.agent_name == data.agents) {
                     console.log("Agent Start Requested");
                     if (status.agent_running == "stopped") {
                         status.agent_running = "started";
-                        console.log("Agent Started");
-                        cypress.run(cypress_json)
-                            .then(result => {
-                                var res = {
-                                    result: result,
-                                    status: "finished",
-                                };
-                                status.agent_running = "stopped";
-                                socket.emit("agent_result", res);
-                            })
-                            .catch(err => {
-                                console.error(err.message)
-                                var res = {
-                                    result: err,
-                                    status: "err",
-                                }
-                                status.agent_running = "stopped";
-                                socket.emit("agent_result", res);
-                            })
+                        // console.log("Agent Started");
+                        // cypress.run(cypress_json)
+                        //     .then(result => {
+                        //         var res = {
+                        //             result: result,
+                        //             status: "finished",
+                        //         };
+                        //         status.agent_running = "stopped";
+                        //         socket.emit("agent_result", res);
+                        //     })
+                        //     .catch(err => {
+                        //         console.error(err.message)
+                        //         var res = {
+                        //             result: err,
+                        //             status: "err",
+                        //         }
+                        //         status.agent_running = "stopped";
+                        //         socket.emit("agent_result", res);
+                        //     })
+
+                        em.emit('bootstrap', data);
                     } else {
                         console.log("Agent Already Running");
                     }
