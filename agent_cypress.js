@@ -55,7 +55,10 @@ async function start(pkg,base_path,handle) {
                                 }
                             }
                         }
-                        socket.emit("updatefixture",json_fixtute)
+                        socket.emit("updatefixture",{
+                            fixture : json_fixtute,
+                            project_id : data
+                        })
                     }
                 }
             }),
