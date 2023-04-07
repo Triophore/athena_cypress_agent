@@ -4,7 +4,9 @@
   "description": "",
   "main": "agent_cypress.js",
   "scripts": {
-    "postinstall": "node post-install"
+    "postinstall": "node post-install",
+    "athena": "athena",
+    "fixture": "athena --command=fixture"
   },
   "bin": {
     "athena": "athena.js"

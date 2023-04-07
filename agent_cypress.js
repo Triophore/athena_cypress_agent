@@ -10,7 +10,7 @@ status.agent_running = "stopped";
 const path = require("path");
 var figlet = require('figlet');
 var events = require('events');
-async function start(pkg,base_path) {
+async function start(pkg,base_path,start,stop) {
     try {
         const cypress = require('cypress');
         console.log(figlet.textSync('Athena', {
@@ -43,6 +43,7 @@ async function start(pkg,base_path) {
 
                 }
             }),
+            start(pkg)
             socket.on("agent_start", async function (data) {
 
                 if (package_json.agent_cypress.agent_name == data.agents) {
