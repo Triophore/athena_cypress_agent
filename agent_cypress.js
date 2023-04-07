@@ -10,7 +10,7 @@ status.agent_running = "stopped";
 const path = require("path");
 var figlet = require('figlet');
 var events = require('events');
-async function start(pkg,base_path,start,stop) {
+async function start(pkg,base_path,handle) {
     try {
         const cypress = require('cypress');
         console.log(figlet.textSync('Athena', {
@@ -40,7 +40,23 @@ async function start(pkg,base_path,start,stop) {
             });
             socket.on("getallfixtures", async function (data) {
                 if(data == package_json.agent_cypress.project_id){
-                    start(data)
+                    //handle(data);
+                    var fixture_data = path.join(base_path,"fixtures.json");
+                    if(fs.existsSync(fixture_data)){
+                        var payload = fs.readFileSync(fixture_data);
+                        var json_fixtute = JSON.parse(fixture_data);
+                        for(var fix in json_fixtute){
+                            var fix_d = json_fixtute[fix];
+                            if(fix_d != ""){
+                                var full_fixture_path = path.join(base_path,fix_d);
+                                if(fs.existsSync(full_fixture_path)){
+                                    var json_fix = JSON.parse(fs.readFileSync(full_fixture_path));
+                                    json_fixtute[fix] = json_fix;
+                                }
+                            }
+                        }
+                        socket.emit("updatefixture",json_fixtute)
+                    }
                 }
             }),
          
