@@ -1,9 +1,17 @@
 var agent = require("athena_cypress_agent");
-const cypress = require('cypress')
-const pkg = require("./package.json")
-async function init(){
-    await agent.start(pkg);
-    const results = await cypress.run()
+const cypress = require('cypress');
+const pkg = require("./package.json");
+var config = require("./cypress.config");
+async function init() {
+    await agent.start(pkg, __dirname,start,stop)
+    // console.log(agent_handle)
+    // const results = await cypress.run()
 }
-console.log("starting");
+async function start(start_config){
+    console.log(start_config)
+}
+async function stop(){
+    
+}
+console.log("starting"); 
 init();
