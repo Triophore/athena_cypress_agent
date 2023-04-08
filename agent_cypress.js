@@ -49,8 +49,10 @@ async function start(pkg,base_path,handle) {
                         console.log(fixture_data)
                         for(var fix in json_fixtute){
                             var fix_d = json_fixtute[fix];
+                            console.log(fix_d)
                             if(fix_d != ""){
                                 var full_fixture_path = path.join(base_path,fix_d);
+                                console.log(full_fixture_path)
                                 if(fs.existsSync(full_fixture_path)){
                                     var json_fix = JSON.parse(fs.readFileSync(full_fixture_path));
                                     json_fixtute[fix] = json_fix;
