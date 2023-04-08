@@ -45,6 +45,7 @@ async function start(pkg,base_path,handle) {
                     if(fs.existsSync(fixture_data)){
                         var payload = fs.readFileSync(fixture_data);
                         var json_fixtute = JSON.parse(payload);
+                        console.log(fixture_data)
                         for(var fix in json_fixtute){
                             var fix_d = json_fixtute[fix];
                             if(fix_d != ""){
@@ -64,7 +65,6 @@ async function start(pkg,base_path,handle) {
             }),
          
             socket.on("agent_start", async function (data) {
-
                 if (package_json.agent_cypress.agent_name == data.agents) {
                     console.log("Agent Start Requested");
                     if (status.agent_running == "stopped") {
