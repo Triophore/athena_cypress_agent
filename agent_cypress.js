@@ -60,7 +60,7 @@ async function start(pkg,base_path,handle) {
                                 }
                             } 
                         }
-                        socket.emit("updatefixture",{
+                        socket.emit("agentupdatefixture",{
                             fixture : json_fixtute,
                             project_id : data
                         })
