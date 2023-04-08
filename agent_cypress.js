@@ -42,6 +42,7 @@ async function start(pkg,base_path,handle) {
                 if(data == package_json.agent_cypress.project_id){
                     //handle(data);
                     var fixture_data = path.join(base_path,"fixtures.json");
+                    console.log(fixture_data)
                     if(fs.existsSync(fixture_data)){
                         var payload = fs.readFileSync(fixture_data);
                         var json_fixtute = JSON.parse(payload);
