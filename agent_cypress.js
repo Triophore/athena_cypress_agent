@@ -46,18 +46,19 @@ async function start(pkg,base_path,handle) {
                     if(fs.existsSync(fixture_data)){
                         var payload = fs.readFileSync(fixture_data);
                         var json_fixtute = JSON.parse(payload);
-                        console.log(fixture_data)
                         for(var fix in json_fixtute){
                             var fix_d = json_fixtute[fix];
-                            console.log(fix_d)
-                            if(fix_d != ""){
-                                var full_fixture_path = path.join(base_path,fix_d);
-                                console.log(full_fixture_path)
-                                if(fs.existsSync(full_fixture_path)){
-                                    var json_fix = JSON.parse(fs.readFileSync(full_fixture_path));
-                                    json_fixtute[fix] = json_fix;
+                            for(var g in fix_d){
+                                var k = fix_d[g];
+                                if(k != ""){
+                                    var full_fixture_path = path.join(base_path,k);
+                                    console.log(full_fixture_path)
+                                    if(fs.existsSync(full_fixture_path)){
+                                        var json_fix = JSON.parse(fs.readFileSync(full_fixture_path));
+                                        fix_d[g] = json_fix;
+                                    }
                                 }
-                            }
+                            } 
                         }
                         socket.emit("updatefixture",{
                             fixture : json_fixtute,
