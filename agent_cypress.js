@@ -44,7 +44,7 @@ async function start(pkg,base_path,handle) {
                     var fixture_data = path.join(base_path,"fixtures.json");
                     if(fs.existsSync(fixture_data)){
                         var payload = fs.readFileSync(fixture_data);
-                        var json_fixtute = JSON.parse(fixture_data);
+                        var json_fixtute = JSON.parse(payload);
                         for(var fix in json_fixtute){
                             var fix_d = json_fixtute[fix];
                             if(fix_d != ""){
