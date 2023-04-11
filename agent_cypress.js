@@ -10,7 +10,7 @@ status.agent_running = "stopped";
 const path = require("path");
 var figlet = require('figlet');
 var events = require('events');
-async function start(pkg,base_path,handle) {
+async function start(pkg, base_path, handle) {
     try {
         const cypress = require('cypress');
         console.log(figlet.textSync('Athena', {
@@ -39,128 +39,134 @@ async function start(pkg,base_path,handle) {
                 socket.emit("join_agent", d);
             });
             socket.on("getallfixtures", async function (data) {
-                if(data == package_json.agent_cypress.project_id){
+                if (data == package_json.agent_cypress.project_id) {
                     //handle(data);
-                    var fixture_data = path.join(base_path,"fixtures.json");
+                    var fixture_data = path.join(base_path, "fixtures.json");
                     console.log(fixture_data)
-                    if(fs.existsSync(fixture_data)){
+                    if (fs.existsSync(fixture_data)) {
                         var payload = fs.readFileSync(fixture_data);
                         var json_fixtute = JSON.parse(payload);
-                        for(var fix in json_fixtute){
+                        for (var fix in json_fixtute) {
                             var fix_d = json_fixtute[fix];
-                            for(var g in fix_d){
-                                var k = fix_d[g];
-                                if(k != ""){
-                                    var full_fixture_path = path.join(base_path,k);
-                                    console.log(full_fixture_path)
-                                    if(fs.existsSync(full_fixture_path)){
-                                        var json_fix = JSON.parse(fs.readFileSync(full_fixture_path));
-                                        fix_d[g] = json_fix;
-                                    }
-                                }
-                            } 
+                            var full_fixture_path = path.join(base_path, fix_d["file"]);
+                            if (fs.existsSync(full_fixture_path)) {
+                                var json_fix = JSON.parse(fs.readFileSync(full_fixture_path));
+                                fix_d["file"] = json_fix;
+                            }
                         }
-                        socket.emit("agentupdatefixture",{
-                            fixture : json_fixtute,
-                            project_id : data
-                        })
-                    }
-                }
-            }),
-         
-            socket.on("agent_start", async function (data) {
-                if (package_json.agent_cypress.agent_name == data.agents) {
-                    console.log("Agent Start Requested");
-                    if (status.agent_running == "stopped") {
-                        status.agent_running = "started";
-                        // console.log("Agent Started");
-                        // cypress.run(cypress_json)
-                        //     .then(result => {
-                        //         var res = {
-                        //             result: result,
-                        //             status: "finished",
-                        //         };
-                        //         status.agent_running = "stopped";
-                        //         socket.emit("agent_result", res);
-                        //     })
-                        //     .catch(err => {
-                        //         console.error(err.message)
-                        //         var res = {
-                        //             result: err,
-                        //             status: "err",
+                        // for(var g in fix_d){
+                        //     var k = fix_d[g];
+                        //     if(k != ""){
+                        //         var full_fixture_path = path.join(base_path,k);
+                        //         console.log(full_fixture_path)
+                        //         if(fs.existsSync(full_fixture_path)){
+                        //             var json_fix = JSON.parse(fs.readFileSync(full_fixture_path));
+                        //             fix_d[g] = json_fix;
                         //         }
-                        //         status.agent_running = "stopped";
-                        //         socket.emit("agent_result", res);
-                        //     }) 
-                    } else {
-                        console.log("Agent Already Running");
+                        //     }
+                        // } 
                     }
+                    socket.emit("agentupdatefixture", {
+                        fixture: json_fixtute,
+                        project_id: data
+                    })
                 }
+            }
+            }),
 
-            });
-            socket.on("agent_info_send", async function () {
-                console.log("Agent Info Sent");
-                var res = await agent_info.getinfo();
-                var d = {
-                    agent_id: socket.id,
-                    project_id: package_json.agent_cypress.project_id,
-                    system_info: res,
-                    status: status,
-                    agent_name: package_json.agent_cypress.agent_name
-                };
-                socket.emit("agent_info_recv", d);
-            });
-
-            socket.on("agent_status_send", function (data) {
-                socket.emit("agent_status_recv", status);
-            });
-
-            socket.on("agent_specs_send", function (data) {
-                socket.emit("agent_specs_recv", status);
-            });
-
-            socket.on("ui_after_spec_media_agent", async function (data) {
-                var worker_data = {
-                    ...data,
-                    ...pkg
+        socket.on("agent_start", async function (data) {
+            if (package_json.agent_cypress.agent_name == data.agents) {
+                console.log("Agent Start Requested");
+                if (status.agent_running == "stopped") {
+                    status.agent_running = "started";
+                    // console.log("Agent Started");
+                    // cypress.run(cypress_json)
+                    //     .then(result => {
+                    //         var res = {
+                    //             result: result,
+                    //             status: "finished",
+                    //         };
+                    //         status.agent_running = "stopped";
+                    //         socket.emit("agent_result", res);
+                    //     })
+                    //     .catch(err => {
+                    //         console.error(err.message)
+                    //         var res = {
+                    //             result: err,
+                    //             status: "err",
+                    //         }
+                    //         status.agent_running = "stopped";
+                    //         socket.emit("agent_result", res);
+                    //     }) 
+                } else {
+                    console.log("Agent Already Running");
                 }
-                var worker_payload = Buffer.from(JSON.stringify(worker_data)).toString('base64');
-                if (worker_data.video) {
-                    var child = spawn('node', [path.join(__dirname, './media_upload.js'), worker_payload]);
-                    child.stdout.setEncoding('utf8');
-                    child.stdout.on('data', function (data) {
-                        console.log('video upload worker OUT :: ' + data);
-                    });
-                    child.stderr.setEncoding('utf8');
-                    child.stderr.on('data', function (data) {
-                        console.log('video upload worker OUT :: ' + data);
-                    });
-                    child.on('close', function (code) {
-                        console.log('video upload worker closed :: ' + code);
-                    });
-                }
-                if (worker_data.screenshots) {
+            }
 
-                }
-            });
-            socket.on("ui_after_spec_video", async function (data) {
-            });
-        } else {
-            console.log("Athena cypress agent config not found");
-            console.log("Please configure Athena cypress agent in package.json");
-            console.log("Please run 'npm run athena' to configure ")
-            process.exit(1);
-        }
-    } catch (error) {
-        console.log(error)
-        console.log("cypress not installed");
-        console.log("Install cypress with: npm install cypress");
-        console.log("Then run: npm run cypress:run");
-        console.log("Existing ..");
+        });
+        socket.on("agent_info_send", async function () {
+            console.log("Agent Info Sent");
+            var res = await agent_info.getinfo();
+            var d = {
+                agent_id: socket.id,
+                project_id: package_json.agent_cypress.project_id,
+                system_info: res,
+                status: status,
+                agent_name: package_json.agent_cypress.agent_name
+            };
+            socket.emit("agent_info_recv", d);
+        });
+
+        socket.on("agent_status_send", function (data) {
+            socket.emit("agent_status_recv", status);
+        });
+
+        socket.on("agent_specs_send", function (data) {
+            socket.emit("agent_specs_recv", status);
+        });
+
+        socket.on("ui_after_spec_media_agent", async function (data) {
+            var worker_data = {
+                ...data,
+                ...pkg
+            }
+            var worker_payload = Buffer.from(JSON.stringify(worker_data)).toString('base64');
+            if (worker_data.video) {
+                var child = spawn('node', [path.join(__dirname, './media_upload.js'), worker_payload]);
+                child.stdout.setEncoding('utf8');
+                child.stdout.on('data', function (data) {
+                    console.log('video upload worker OUT :: ' + data);
+                });
+                child.stderr.setEncoding('utf8');
+                child.stderr.on('data', function (data) {
+                    console.log('video upload worker OUT :: ' + data);
+                });
+                child.on('close', function (code) {
+                    console.log('video upload worker closed :: ' + code);
+                });
+            }
+            if (worker_data.screenshots) {
+
+            }
+        });
+        socket.on("ui_after_spec_video", async function (data) {
+        });
+    } else {
+        console.log("Athena cypress agent config not found");
+        console.log("Please configure Athena cypress agent in package.json");
+        console.log("Please run 'npm run athena' to configure ")
         process.exit(1);
-
-
     }
+} catch (error) {
+    console.log(error)
+    console.log("cypress not installed");
+    console.log("Install cypress with: npm install cypress");
+    console.log("Then run: npm run cypress:run");
+    console.log("Existing ..");
+    process.exit(1);
+
+
+}
 }
 module.exports.start = start;
 module.exports.plugin = require("./index").init;

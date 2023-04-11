@@ -9,11 +9,6 @@ const argv = yargs(hideBin(process.argv)).argv
 const saveFile = require('fs').writeFileSync;
 async function start() {
 
-
-
-    // console.log(start_script)
-    // process.exit(0)
-
     console.log(figlet.textSync('Athena', {
         // font: 'Ghost',
         horizontalLayout: 'default',
