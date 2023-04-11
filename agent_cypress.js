@@ -45,9 +45,10 @@ async function start(pkg, base_path, handle) {
                     if (fs.existsSync(fixture_data)) {
                         var payload = fs.readFileSync(fixture_data);
                         var json_fixtute = JSON.parse(payload);
-                        for (var fix in json_fixtute) {
-                            var fix_d = json_fixtute[fix];  
-                            if(full_fixture_path != "" && full_fixture_path != null && full_fixture_path !=''){
+                        for (var fix = 0 ; fix < json_fixtute.length ; fix++) {
+                            var fix_d = json_fixtute[fix]; 
+                            console.log(fix_d) 
+                            if(fix_d["file"] != "" && fix_d["file"] != null && fix_d["file"] !=''){
                                 var full_fixture_path = path.join(base_path,"fixtures", fix_d["file"]);
                                 if (fs.existsSync(full_fixture_path)) {
                                     var json_fix = JSON.parse(fs.readFileSync(full_fixture_path));
