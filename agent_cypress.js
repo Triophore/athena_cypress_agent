@@ -71,7 +71,7 @@ async function start(pkg, base_path, handle) {
                         project_id: data
                     })
                 }
-            }
+            
             }),
 
         socket.on("agent_start", async function (data) {
