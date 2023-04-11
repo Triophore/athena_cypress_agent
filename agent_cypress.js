@@ -91,9 +91,7 @@ async function start(pkg,base_path,handle) {
                         //         }
                         //         status.agent_running = "stopped";
                         //         socket.emit("agent_result", res);
-                        //     })
-
-                     
+                        //     }) 
                     } else {
                         console.log("Agent Already Running");
                     }

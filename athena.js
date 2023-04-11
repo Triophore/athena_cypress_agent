@@ -45,7 +45,11 @@ async function start() {
             var o = {
 
             }
-            o[Files[d]] = "";
+            o = {
+                file : "",
+                fixture : "",
+                spec : Files[d]
+            };
             final_fixture.push(o);
         }
 
